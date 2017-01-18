@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.0.0';
+        $this->version = '1.0.1';
         $this->author = 'Xavier Martínez';
         $this->need_instance = 0;
 
@@ -219,10 +219,16 @@ class Captureleadsxavier extends Module
         $this->context->controller->addJS($this->_path.'/views/js/front.js');
         $this->context->controller->addCSS($this->_path.'/views/css/front.css');
     }
-
+    
     public function hookDisplayLeftColumn()
     {
-        /* Place your code here. */
+        $this->context->Smarty->assign(
+            array(
+                'message_txt' => 'Hello World',
+                'mesagelong_txt'=> 'Yes this is my fisrt module',
+                'link_txt'=> ' http://www.google.es'
+            ));
+        return $this->display(__FILE__, 'column.tpl');
     }
 
     public function hookDisplayRightColumn()
