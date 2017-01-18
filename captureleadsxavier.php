@@ -255,7 +255,7 @@ class Captureleadsxavier extends Module
 
     public function hookDisplayLeftColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="left")
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right")
         {
             return $this->showModule();
         }
