@@ -1,5 +1,5 @@
-<h2>$message_txt</h2>
+<h2>{$message_txt}</h2>
 
-<p>$messagelong_txt</p>
+<p>{$messagelong_txt}</p>
 
-<a href="$link_txt">[1 s='Click this link' mod='myFristModule']</a>
+<a href="{$link_txt}">{l s='Click this link' mod='captureleadsxavier'}</a>

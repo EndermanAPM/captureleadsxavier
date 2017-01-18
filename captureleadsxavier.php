@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'Xavier Martínez';
         $this->need_instance = 0;
 
@@ -225,7 +225,7 @@ class Captureleadsxavier extends Module
         $this->context->smarty->assign(
             array(
                 'message_txt' => 'Hello World',
-                'mesagelong_txt'=> 'Yes this is my fisrt module',
+                'messagelong_txt'=> 'Yes this is my first module',
                 'link_txt'=> ' http://www.google.es'
             ));
         return $this->display(__FILE__, 'column.tpl'); 
