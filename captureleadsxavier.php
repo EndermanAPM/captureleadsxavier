@@ -37,7 +37,7 @@ class Captureleadsxavier extends Module
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
         $this->version = '1.1.0';
-        $this->author = 'Xavier Martínez';
+        $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
 
         /**
