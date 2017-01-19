@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.1.0';
+        $this->version = '1.1.1';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
 
@@ -172,7 +172,7 @@ class Captureleadsxavier extends Module
                         'type' => 'radio',
                         'label' => $this->l('Column selector'),
                         'name' => 'CAPTURELEADSXAVIER_COL_SEL',
-                        'required'  => true,  
+                        'required'  => true,
                         'is_bool' => true,
                         'desc' => $this->l('Select on what column you want the module'),
                         'values' => array(
@@ -205,7 +205,10 @@ class Captureleadsxavier extends Module
     {
         return array(
             'CAPTURELEADSXAVIER_LIVE_MODE' => Configuration::get('CAPTURELEADSXAVIER_LIVE_MODE', true),
-            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL', 'contact@prestashop.com'),
+            
+            // Linea inferior generada por el validator, no cumple con el validator.
+            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL', 
+                    'contact@prestashop.com'),
             'CAPTURELEADSXAVIER_ACCOUNT_PASSWORD' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_PASSWORD', null),
             'CAPTURELEADSXAVIER_COL_SEL' => Configuration::get('CAPTURELEADSXAVIER_COL_SEL', "left"),
         );
@@ -249,22 +252,21 @@ class Captureleadsxavier extends Module
                 'message_txt' => 'Hello World',
                 'messagelong_txt'=> 'Yes this is my first module',
                 'link_txt'=> ' http://www.google.es'
-            ));
-        return $this->display(__FILE__, 'column.tpl'); 
+                )
+                );
+        return $this->display(__FILE__, 'column.tpl');
     }
 
     public function hookDisplayLeftColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right")
-        {
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right"){
             return $this->showModule();
         }
     }
 
     public function hookDisplayRightColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right")
-        {
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right"){
             return $this->showModule();
         }
     }
