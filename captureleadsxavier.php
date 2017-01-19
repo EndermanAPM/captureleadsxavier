@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.1.1';
+        $this->version = '1.1.2';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
 
@@ -207,8 +207,8 @@ class Captureleadsxavier extends Module
             'CAPTURELEADSXAVIER_LIVE_MODE' => Configuration::get('CAPTURELEADSXAVIER_LIVE_MODE', true),
             
             // Linea inferior generada por el validator, no cumple con el validator.
-            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL', 
-                    'contact@prestashop.com'),
+            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL',
+                'contact@prestashop.com'),
             'CAPTURELEADSXAVIER_ACCOUNT_PASSWORD' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_PASSWORD', null),
             'CAPTURELEADSXAVIER_COL_SEL' => Configuration::get('CAPTURELEADSXAVIER_COL_SEL', "left"),
         );
@@ -253,20 +253,20 @@ class Captureleadsxavier extends Module
                 'messagelong_txt'=> 'Yes this is my first module',
                 'link_txt'=> ' http://www.google.es'
                 )
-                );
+        );
         return $this->display(__FILE__, 'column.tpl');
     }
 
     public function hookDisplayLeftColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right"){
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right") {
             return $this->showModule();
         }
     }
 
     public function hookDisplayRightColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right"){
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right") {
             return $this->showModule();
         }
     }
