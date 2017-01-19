@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.1.2';
+        $this->version = '1.1.3';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
 
@@ -205,10 +205,8 @@ class Captureleadsxavier extends Module
     {
         return array(
             'CAPTURELEADSXAVIER_LIVE_MODE' => Configuration::get('CAPTURELEADSXAVIER_LIVE_MODE', true),
-            
             // Linea inferior generada por el validator, no cumple con el validator.
-            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get
-                ('CAPTURELEADSXAVIER_ACCOUNT_EMAIL','contact@prestashop.com'),
+            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL','contact@prestashop.com'),
             'CAPTURELEADSXAVIER_ACCOUNT_PASSWORD' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_PASSWORD', null),
             'CAPTURELEADSXAVIER_COL_SEL' => Configuration::get('CAPTURELEADSXAVIER_COL_SEL', "left"),
         );
