@@ -24,19 +24,35 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-$sql = array();
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
-// I'm fully aware this is far from perfect, but it should get the job done.
-// Maybe a better option will be implemented in the future
-// See: https://www.mssqltips.com/sqlservertip/2657/storing-email-addresses-more-efficiently-in-sql-server/
-// Also, varchar(320) wont work well with the default limitation of 767 bytes on the key.
-$sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'captureleadsxavier_newsletter` (
-    `email` varchar(255) NOT NULL,
-    PRIMARY KEY  (`email`)
-    ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+/**
+ * This function updates your module from previous versions to the version 3.0.0,
+ * usefull when you modify your database, or register a new hook ...
+ * Don't forget to create one file per version.
+ */
+function upgrade_module_3_0_0($module)
+{
+    /**
+     * Do everything you want right there,
+     * You could add a column in one of your module's tables
+     */
+    // See install.php for comments on the table creation.
+    $sql = array();
 
-foreach ($sql as $query) {
-    if (Db::getInstance()->execute($query) == false) {
-        return false;
+    $sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'captureleadsxavier_newsletter` (
+        `email` varchar(255) NOT NULL,
+        PRIMARY KEY  (`email`)
+        ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+
+    foreach ($sql as $query) {
+        if (Db::getInstance()->execute($query) == false) {
+            return false;
+        }
     }
+
+
+    return true;
 }

@@ -18,3 +18,8 @@
         </ul>
     </div>
 </div>
+<div>
+    <h4 class="title_block">{l s='Want to receive the latest offers?' mod='captureleadsxavier'}</h4>
+    {*toDO: Autoclose fancybox at submit*}
+    <a class="fancynews" data-fancybox-type="iframe" href="{$postURL|escape:'html'}"><button type="button">{l s='Register to newsletter' mod='captureleadsxavier'}</button></a>
+</div>

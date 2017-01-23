@@ -24,19 +24,12 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-$sql = array();
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 
-// I'm fully aware this is far from perfect, but it should get the job done.
-// Maybe a better option will be implemented in the future
-// See: https://www.mssqltips.com/sqlservertip/2657/storing-email-addresses-more-efficiently-in-sql-server/
-// Also, varchar(320) wont work well with the default limitation of 767 bytes on the key.
-$sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'captureleadsxavier_newsletter` (
-    `email` varchar(255) NOT NULL,
-    PRIMARY KEY  (`email`)
-    ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
-foreach ($sql as $query) {
-    if (Db::getInstance()->execute($query) == false) {
-        return false;
-    }
-}
+header('Location: ../');
+exit;

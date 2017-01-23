@@ -36,9 +36,10 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '2.1.0';
-        $this->author = 'Xavier Martínez';
+        $this->version = '3.0.4';
+        $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
+        $this->controllers = array('newslettercaptureleads');
 
         /**
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
@@ -67,19 +68,28 @@ class Captureleadsxavier extends Module
         //Default value upon install
         Configuration::updateValue('CAPTURELEADSXAVIER_COL_SEL', "left");
         Configuration::updateValue('CAPTURELEADSXAVIER_NBR', 3);
-
+        $this->createTables();
         return parent::install() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
             $this->registerHook('displayLeftColumn') &&
             $this->registerHook('displayRightColumn');
+
     }
 
     public function uninstall()
     {
         Configuration::deleteByName('CAPTURELEADSXAVIER_LIVE_MODE');
-
+        $this->dropTables();
         return parent::uninstall();
+    }
+    public function dropTables()
+    {
+        include(dirname(__FILE__).'/sql/uninstall.php');
+    }
+    public function createTables()
+    {
+        include(dirname(__FILE__).'/sql/install.php');
     }
 
     /**
@@ -325,13 +335,14 @@ class Captureleadsxavier extends Module
             $this->smarty->assign(array(
                 'message_txt' => $this->displayName,
                 'productsViewedObj' => $productsViewedObj,
-                'mediumSize' => Image::getSize('medium')));
+                'mediumSize' => Image::getSize('medium'),
+                'postURL' => $this->context->link->getModuleLInk($this->name, "newslettercaptureleads")
+            ));
 
             return $this->display(__FILE__, 'column.tpl');
         }
         return;
     }
-
 
 
     public function hookDisplayLeftColumn($params)
@@ -342,10 +353,11 @@ class Captureleadsxavier extends Module
         }
     }
 
-    public function hookDisplayRightColumn()
+    public function hookDisplayRightColumn($params)
     {
         if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right")
         {
+
             return $this->viewedItems();
         }
     }
