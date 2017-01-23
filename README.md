@@ -22,9 +22,9 @@ Objectives
 ####Part3:
 
  - [X] Update version to 3.x.x
- - [ ] Add block with button below the previously created list.
+ - [X] Add block with button below the previously created list.
  - [ ] Spawn fancybox upon button being clicked.
  - [ ] Fancybox contains a newsletter like form (with email field and condition checkbox)
- - [ ] Data must be inserted inside a module table
+ - [X] Data must be inserted inside a module table
  - [x] On module install **and upgrade** the module table must be created.
  

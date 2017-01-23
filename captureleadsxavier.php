@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '3.0.1';
+        $this->version = '3.0.2';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
         $this->controllers = array('newslettercaptureleads');
