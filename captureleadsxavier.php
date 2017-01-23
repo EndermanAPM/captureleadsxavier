@@ -178,7 +178,7 @@ class Captureleadsxavier extends Module
                         'type' => 'radio',
                         'label' => $this->l('Column selector'),
                         'name' => 'CAPTURELEADSXAVIER_COL_SEL',
-                        'required'  => true,  
+                        'required'  => true,
                         'is_bool' => true,
                         'desc' => $this->l('Select on what column you want the module'),
                         'values' => array(
@@ -256,8 +256,9 @@ class Captureleadsxavier extends Module
                 'message_txt' => 'Hello World',
                 'messagelong_txt'=> 'Yes this is my first module',
                 'link_txt'=> ' http://www.google.es'
-            ));
-        return $this->display(__FILE__, 'column.tpl'); 
+            )
+        );
+        return $this->display(__FILE__, 'column.tpl');
     }
     private function viewedItems($params)
     {
