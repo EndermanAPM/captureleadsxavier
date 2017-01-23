@@ -134,6 +134,7 @@ class Captureleadsxavier extends Module
      */
     protected function getConfigForm()
     {
+        // toDo: Add config to choose items showed by viewedItems
         return array(
             'form' => array(
                 'legend' => array(
