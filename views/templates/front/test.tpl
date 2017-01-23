@@ -10,30 +10,37 @@
 .breadcrumb.clearfix{
     display: none;
 }
+label {
+    display: inline-block;
+}
 </style>
 
-<!-- Code from Block Newsletter module-->
+<!-- Code adapted from Block Newsletter module-->
 </head>
 <body>
 
 <div id="newsletter_block_left" class="block">
     <h4 class="title_block">{l s='Newsletter' mod='captureleadsxavier'}</h4>
     <div class="block_content">
-        {if isset($msg) && $msg}
-            <p class="{if $nw_error}warning_inline{else}success_inline{/if}">{$msg}</p>
-        {/if}
         <form action="{$postURL|escape:'html'}" method="post" id="newForm">
             <p>
-                <input class="inputNew" id="capture-newsletter-input" type="text" name="email" size="18" value="{l s='your e-mail' mod='captureleadsxavier'}" />
-                <input type="submit" value="ok" class="button_mini" name="submitCaptureleadsNewsletter" />
-                <input type="hidden" name="action" value="0" />
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="capture-newsletter-input" placeholder="{l s='Your e-mail' mod='captureleadsxavier'}" name="email">
+
+                    <td><input type="submit" value="ok" class="button_mini" name="submitCaptureleadsNewsletter" /></td>
+                </div>
+
+                <td><div class="checkbox"><label><input type="checkbox" name="action" value="0" />{l s='I agree to the Terms' mod='captureleadsxavier'}</label></div></td>
+
             </p>
         </form>
     </div>
 </div>
 {*Text clear working again*}
 <script type="text/javascript">
-    var placeholder = "{l s='your e-mail' mod='captureleadsxavier' js=1}";
+    var placeholder = "{l s='Your e-mail' mod='captureleadsxavier' js=1}";
 
     $(document).ready(function() {
         $("#capture-newsletter-input").on({
