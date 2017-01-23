@@ -1,9 +1,13 @@
 # captureleadsxavier
 
 About
-======
+===
 CaptureleadsXavier is a basic Prestashop 1.6 compliant module that aims to accomplish
- the Ecomm360's objectives.
+the Ecomm360's objectives.
+    
+<br>
+<details> 
+   <summary>Main Objectives</summary>
 
 Objectives
 ======
@@ -27,4 +31,44 @@ Objectives
  - [x] Fancybox contains a newsletter like form (with email field and condition checkbox)
  - [X] Data must be inserted inside a module table
  - [x] On module install **and upgrade** the module table must be created.
+
+</details>
+
+---
+
+<details> 
+   <summary>Further improvements</summary>
+   
+###Further improvements:
  
+ ####Fixer Upper:
+ - [ ] P2 - Remove unnecessary (productsViewed) query elements.
+ - [ ] Sanitize inputs.
+ - [ ] Improve file naming.
+ - [ ] Remove embebed CCS and JS from tpl files.
+ - [ ] Avoid hardcoding at ModuleFrontController (getModuleLInk).
+ 
+ 
+ 
+ ####TODOs:
+  #####Part2:
+ - [ ] Number of items shown selector (Configure). 
+ #####Part3
+ - [ ] Add check for data already on the database.
+ - [ ] Close fancybox after data POST.
+ - [ ] Add frontend feedback of the result of the form.
+ - [ ] Improve mail storage structure.
+ 
+ ####Late additons
+ ######Maybe I'll get arround to implement them, eventially:
+ - Continuous integration
+ - Automated testion
+ 
+ </details>
+
+---
+
+<details> 
+    <summary>Nothing</summary>
+    Told you
+</details> 
