@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '3.0.2';
+        $this->version = '3.0.3';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
         $this->controllers = array('newslettercaptureleads');
@@ -336,7 +336,7 @@ class Captureleadsxavier extends Module
                 'message_txt' => $this->displayName,
                 'productsViewedObj' => $productsViewedObj,
                 'mediumSize' => Image::getSize('medium'),
-                'postURL' => $this->context->link->getModuleLInk($this->name, newslettercaptureleads)
+                'postURL' => $this->context->link->getModuleLInk($this->name, "newslettercaptureleads")
             ));
 
             return $this->display(__FILE__, 'column.tpl');

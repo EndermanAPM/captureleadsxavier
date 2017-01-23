@@ -24,13 +24,17 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
     public $display_column_right = false;
     public $ssl = true;
 
+    public function initContent()
+    {
+        parent::initContent();
+        $this->context->smarty->assign(array(
+            // There must be a way of populating getModuleLink from the controller without hardcoding it (aside config values)
+            'postURL' => $this->context->link->getModuleLInk("captureleadsxavier", "newslettercaptureleads")
+        ));
 
-//    public function initContent()
-//    {
-//        parent::initContent();
-//
-//        $this->setTemplate('test.tpl');
-//    }
+
+        return $this->setTemplate('test.tpl');
+    }
 
 
     public function postProcess()
@@ -43,7 +47,10 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
                 $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES('".pSQL($_POST['email'])."');";
                 Db::getInstance()->execute($sql);
             }
+
+
+            Tools::redirect(Configuration::get(__PS_BASE_URI__));
         }
-        Tools::redirect(Configuration::get(__PS_BASE_URI__));
+
     }
 }
