@@ -40,10 +40,8 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
 
     public function postProcess()
     {
-        if (Tools::isSubmit('submitCaptureleadsNewsletter'))
-        {
-            if (Tools::getValue('action') == '0')
-            {
+        if (Tools::isSubmit('submitCaptureleadsNewsletter')) {
+            if (Tools::getValue('action') == '0') {
                 // toDo: Clean input and check for values already in the table
                 $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES
                 ('".pSQL(Tools::getValue('email'))."');";
@@ -53,6 +51,5 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
 
             Tools::redirect(Configuration::get(__PS_BASE_URI__));
         }
-
     }
 }

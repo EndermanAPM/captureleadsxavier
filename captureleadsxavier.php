@@ -62,7 +62,6 @@ class Captureleadsxavier extends Module
      */
     public function install()
     {
-
         Configuration::updateValue('CAPTURELEADSXAVIER_LIVE_MODE', false);
 
         //Default value upon install
@@ -74,7 +73,6 @@ class Captureleadsxavier extends Module
             $this->registerHook('backOfficeHeader') &&
             $this->registerHook('displayLeftColumn') &&
             $this->registerHook('displayRightColumn');
-
     }
 
     public function uninstall()
@@ -275,8 +273,7 @@ class Captureleadsxavier extends Module
         // Just maybe stolen and adapted from Prestashop's module "blockviewed"
         $productsViewed = (isset($params['cookie']->viewed) && !empty($params['cookie']->viewed)) ? array_slice(array_reverse(explode(',', $params['cookie']->viewed)), 0, Configuration::get('CAPTURELEADSXAVIER_NBR')) : array();
 
-        if (count($productsViewed))
-        {
+        if (count($productsViewed)) {
             $defaultCover = Language::getIsoById($params['cookie']->id_lang).'-default';
             $productIds = implode(',', array_map('intval', $productsViewed));
             // toDo: Should really delete the image from the query as it is no longer used.
@@ -296,21 +293,20 @@ class Captureleadsxavier extends Module
             );
 
             $productsImagesArray = array();
-            foreach ($productsImages as $pi)
+            foreach ($productsImages as $pi) {
                 $productsImagesArray[$pi['id_product']] = $pi;
+            }
 
             $productsViewedObj = array();
-            foreach ($productsViewed as $productViewed)
-            {
+            foreach ($productsViewed as $productViewed) {
                 $obj = (object)'Product';
-                if (!isset($productsImagesArray[$productViewed]) || (!$obj->active = $productsImagesArray[$productViewed]['active']))
+                if (!isset($productsImagesArray[$productViewed]) || (!$obj->active = $productsImagesArray[$productViewed]['active'])) {
                     continue;
-                else
-                {
+                } else {
                     $obj->id = (int)($productsImagesArray[$productViewed]['id_product']);
                     $obj->id_image = (int)$productsImagesArray[$productViewed]['id_image'];
                     // I'm sure there are more accurate values with tax already applied butt for now this should do the trick.
-                    $obj->price = number_format((float)$productsImagesArray[$productViewed]['price'],2,'.','');
+                    $obj->price = number_format((float)$productsImagesArray[$productViewed]['price'], 2, '.', '');
                     $obj->cover = (int)($productsImagesArray[$productViewed]['id_product']).'-'.(int)($productsImagesArray[$productViewed]['id_image']);
                     $obj->legend = $productsImagesArray[$productViewed]['legend'];
                     $obj->name = $productsImagesArray[$productViewed]['name'];
@@ -320,8 +316,7 @@ class Captureleadsxavier extends Module
                     // $obj is not a real product so it cannot be used as argument for getProductLink()
                     $obj->product_link = $this->context->link->getProductLink($obj->id, $obj->link_rewrite, $obj->category_rewrite);
 
-                    if (!isset($obj->cover) || !$productsImagesArray[$productViewed]['id_image'])
-                    {
+                    if (!isset($obj->cover) || !$productsImagesArray[$productViewed]['id_image']) {
                         $obj->cover = $defaultCover;
                         $obj->legend = '';
                     }
@@ -329,8 +324,9 @@ class Captureleadsxavier extends Module
                 }
             }
 
-            if (!count($productsViewedObj))
+            if (!count($productsViewedObj)) {
                 return;
+            }
 
             $this->smarty->assign(array(
                 'message_txt' => $this->displayName,
@@ -346,17 +342,14 @@ class Captureleadsxavier extends Module
 
     public function hookDisplayLeftColumn($params)
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right")
-        {
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right") {
             return $this->viewedItems($params);
         }
     }
 
     public function hookDisplayRightColumn($params)
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right")
-        {
-
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right") {
             return $this->viewedItems();
         }
     }
