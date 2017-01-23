@@ -36,7 +36,7 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '2.0.0';
+        $this->version = '2.1.0';
         $this->author = 'Xavier Martínez';
         $this->need_instance = 0;
 
@@ -266,10 +266,10 @@ class Captureleadsxavier extends Module
         if (count($productsViewed))
         {
             $defaultCover = Language::getIsoById($params['cookie']->id_lang).'-default';
-
             $productIds = implode(',', array_map('intval', $productsViewed));
+            // toDo: Should really delete the image from the query as it is no longer used.
             $productsImages = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-			SELECT MAX(image_shop.id_image) id_image, p.id_product, il.legend, product_shop.active, pl.name, pl.description_short, pl.link_rewrite, cl.link_rewrite AS category_rewrite
+			SELECT MAX(image_shop.id_image) id_image, p.id_product, p.price, il.legend, product_shop.active, pl.name, pl.description_short, pl.link_rewrite, cl.link_rewrite AS category_rewrite
 			FROM '._DB_PREFIX_.'product p
 			'.Shop::addSqlAssociation('product', 'p').'
 			LEFT JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product'.Shop::addSqlRestrictionOnLang('pl').')
@@ -297,6 +297,8 @@ class Captureleadsxavier extends Module
                 {
                     $obj->id = (int)($productsImagesArray[$productViewed]['id_product']);
                     $obj->id_image = (int)$productsImagesArray[$productViewed]['id_image'];
+                    // I'm sure there are more accurate values with tax already applied butt for now this should do the trick.
+                    $obj->price = number_format((float)$productsImagesArray[$productViewed]['price'],2,'.','');
                     $obj->cover = (int)($productsImagesArray[$productViewed]['id_product']).'-'.(int)($productsImagesArray[$productViewed]['id_image']);
                     $obj->legend = $productsImagesArray[$productViewed]['legend'];
                     $obj->name = $productsImagesArray[$productViewed]['name'];
