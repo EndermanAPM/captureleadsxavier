@@ -36,8 +36,8 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '1.1.3';
-        $this->author = 'Xavier Martinez';
+        $this->version = '2.1.0';
+        $this->author = 'Xavier Martínez';
         $this->need_instance = 0;
 
         /**
@@ -61,7 +61,12 @@ class Captureleadsxavier extends Module
      */
     public function install()
     {
+
         Configuration::updateValue('CAPTURELEADSXAVIER_LIVE_MODE', false);
+
+        //Default value upon install
+        Configuration::updateValue('CAPTURELEADSXAVIER_COL_SEL', "left");
+        Configuration::updateValue('CAPTURELEADSXAVIER_NBR', 3);
 
         return parent::install() &&
             $this->registerHook('header') &&
@@ -172,7 +177,7 @@ class Captureleadsxavier extends Module
                         'type' => 'radio',
                         'label' => $this->l('Column selector'),
                         'name' => 'CAPTURELEADSXAVIER_COL_SEL',
-                        'required'  => true,
+                        'required'  => true,  
                         'is_bool' => true,
                         'desc' => $this->l('Select on what column you want the module'),
                         'values' => array(
@@ -205,10 +210,10 @@ class Captureleadsxavier extends Module
     {
         return array(
             'CAPTURELEADSXAVIER_LIVE_MODE' => Configuration::get('CAPTURELEADSXAVIER_LIVE_MODE', true),
-            // Linea inferior generada por el validator, no cumple con el validator.
-            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL','contact@prestashop.com'),
+            'CAPTURELEADSXAVIER_ACCOUNT_EMAIL' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_EMAIL', 'contact@prestashop.com'),
             'CAPTURELEADSXAVIER_ACCOUNT_PASSWORD' => Configuration::get('CAPTURELEADSXAVIER_ACCOUNT_PASSWORD', null),
             'CAPTURELEADSXAVIER_COL_SEL' => Configuration::get('CAPTURELEADSXAVIER_COL_SEL', "left"),
+            'CAPTURELEADSXAVIER_NBR' => Configuration::get('CAPTURELEADSXAVIER_NBR', 3)
         );
     }
 
@@ -250,22 +255,96 @@ class Captureleadsxavier extends Module
                 'message_txt' => 'Hello World',
                 'messagelong_txt'=> 'Yes this is my first module',
                 'link_txt'=> ' http://www.google.es'
-                )
-        );
-        return $this->display(__FILE__, 'column.tpl');
+            ));
+        return $this->display(__FILE__, 'column.tpl'); 
+    }
+    private function viewedItems($params)
+    {
+        // Just maybe stolen and adapted from Prestashop's module "blockviewed"
+        $productsViewed = (isset($params['cookie']->viewed) && !empty($params['cookie']->viewed)) ? array_slice(array_reverse(explode(',', $params['cookie']->viewed)), 0, Configuration::get('CAPTURELEADSXAVIER_NBR')) : array();
+
+        if (count($productsViewed))
+        {
+            $defaultCover = Language::getIsoById($params['cookie']->id_lang).'-default';
+            $productIds = implode(',', array_map('intval', $productsViewed));
+            // toDo: Should really delete the image from the query as it is no longer used.
+            $productsImages = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+			SELECT MAX(image_shop.id_image) id_image, p.id_product, p.price, il.legend, product_shop.active, pl.name, pl.description_short, pl.link_rewrite, cl.link_rewrite AS category_rewrite
+			FROM '._DB_PREFIX_.'product p
+			'.Shop::addSqlAssociation('product', 'p').'
+			LEFT JOIN '._DB_PREFIX_.'product_lang pl ON (pl.id_product = p.id_product'.Shop::addSqlRestrictionOnLang('pl').')
+			LEFT JOIN '._DB_PREFIX_.'image i ON (i.id_product = p.id_product)'.
+                Shop::addSqlAssociation('image', 'i', false, 'image_shop.cover=1').'
+			LEFT JOIN '._DB_PREFIX_.'image_lang il ON (il.id_image = image_shop.id_image AND il.id_lang = '.(int)($params['cookie']->id_lang).')
+			LEFT JOIN '._DB_PREFIX_.'category_lang cl ON (cl.id_category = product_shop.id_category_default'.Shop::addSqlRestrictionOnLang('cl').')
+			WHERE p.id_product IN ('.$productIds.')
+			AND pl.id_lang = '.(int)($params['cookie']->id_lang).'
+			AND cl.id_lang = '.(int)($params['cookie']->id_lang).'
+			GROUP BY product_shop.id_product'
+            );
+
+            $productsImagesArray = array();
+            foreach ($productsImages as $pi)
+                $productsImagesArray[$pi['id_product']] = $pi;
+
+            $productsViewedObj = array();
+            foreach ($productsViewed as $productViewed)
+            {
+                $obj = (object)'Product';
+                if (!isset($productsImagesArray[$productViewed]) || (!$obj->active = $productsImagesArray[$productViewed]['active']))
+                    continue;
+                else
+                {
+                    $obj->id = (int)($productsImagesArray[$productViewed]['id_product']);
+                    $obj->id_image = (int)$productsImagesArray[$productViewed]['id_image'];
+                    // I'm sure there are more accurate values with tax already applied butt for now this should do the trick.
+                    $obj->price = number_format((float)$productsImagesArray[$productViewed]['price'],2,'.','');
+                    $obj->cover = (int)($productsImagesArray[$productViewed]['id_product']).'-'.(int)($productsImagesArray[$productViewed]['id_image']);
+                    $obj->legend = $productsImagesArray[$productViewed]['legend'];
+                    $obj->name = $productsImagesArray[$productViewed]['name'];
+                    $obj->description_short = $productsImagesArray[$productViewed]['description_short'];
+                    $obj->link_rewrite = $productsImagesArray[$productViewed]['link_rewrite'];
+                    $obj->category_rewrite = $productsImagesArray[$productViewed]['category_rewrite'];
+                    // $obj is not a real product so it cannot be used as argument for getProductLink()
+                    $obj->product_link = $this->context->link->getProductLink($obj->id, $obj->link_rewrite, $obj->category_rewrite);
+
+                    if (!isset($obj->cover) || !$productsImagesArray[$productViewed]['id_image'])
+                    {
+                        $obj->cover = $defaultCover;
+                        $obj->legend = '';
+                    }
+                    $productsViewedObj[] = $obj;
+                }
+            }
+
+            if (!count($productsViewedObj))
+                return;
+
+            $this->smarty->assign(array(
+                'message_txt' => $this->displayName,
+                'productsViewedObj' => $productsViewedObj,
+                'mediumSize' => Image::getSize('medium')));
+
+            return $this->display(__FILE__, 'column.tpl');
+        }
+        return;
     }
 
-    public function hookDisplayLeftColumn()
+
+
+    public function hookDisplayLeftColumn($params)
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right") {
-            return $this->showModule();
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right")
+        {
+            return $this->viewedItems($params);
         }
     }
 
     public function hookDisplayRightColumn()
     {
-        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right") {
-            return $this->showModule();
+        if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right")
+        {
+            return $this->viewedItems();
         }
     }
 }
