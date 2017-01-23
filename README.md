@@ -41,28 +41,34 @@ Objectives
    
 ###Further improvements:
  
- ####Fixer Upper:
+####Fixer Upper:
+ 
  - [ ] P2 - Remove unnecessary (productsViewed) query elements.
  - [ ] Sanitize inputs.
  - [ ] Improve file naming.
- - [ ] Remove embebed CCS and JS from tpl files.
+ - [ ] Remove embedded CCS and JS from tpl files.
  - [ ] Avoid hardcoding at ModuleFrontController (getModuleLInk).
  
  
  
- ####TODOs:
-  #####Part2:
+####TODOs:
+#####Part2:
+
  - [ ] Number of items shown selector (Configure). 
+ 
  #####Part3
+ 
  - [ ] Add check for data already on the database.
  - [ ] Close fancybox after data POST.
  - [ ] Add frontend feedback of the result of the form.
  - [ ] Improve mail storage structure.
  
  ####Late additons
+ 
  ######Maybe I'll get arround to implement them, eventially:
- - Continuous integration
- - Automated testion
+ 
+ - Continuous integration.
+ - Automated testing.
  
  </details>
 
