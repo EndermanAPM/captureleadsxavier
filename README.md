@@ -4,6 +4,8 @@ About
 ===
 CaptureleadsXavier is a basic Prestashop 1.6 compliant module that aims to accomplish
 the Ecomm360's objectives.
+
+
     
 <br>
 <details> 
@@ -56,16 +58,16 @@ Objectives
 
  - [ ] Number of items shown selector (Configure). 
  
- #####Part3
+#####Part3:
  
  - [ ] Add check for data already on the database.
  - [ ] Close fancybox after data POST.
  - [ ] Add frontend feedback of the result of the form.
  - [ ] Improve mail storage structure.
  
- ####Late additons
+###Late additons
  
- ######Maybe I'll get arround to implement them, eventially:
+######Maybe I'll get arround to implement them, eventially:
  
  - Continuous integration.
  - Automated testing.
