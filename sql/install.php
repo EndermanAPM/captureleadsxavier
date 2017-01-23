@@ -26,10 +26,14 @@
 
 $sql = array();
 
-$sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'captureleadsxavier` (
-    `id_captureleadsxavier` int(11) NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY  (`id_captureleadsxavier`)
-) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+// I'm fully aware this is far from perfect, but it should get the job done.
+// Maybe a better option will be implemented in the future
+// See: https://www.mssqltips.com/sqlservertip/2657/storing-email-addresses-more-efficiently-in-sql-server/
+// Also, varchar(320) wont work well with the default limitation of 767 bytes on the key.
+$sql[] = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'captureleadsxavier_newsletter` (
+    `email` varchar(255) NOT NULL,
+    PRIMARY KEY  (`email`)
+    ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {
     if (Db::getInstance()->execute($query) == false) {

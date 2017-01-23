@@ -36,8 +36,8 @@ class Captureleadsxavier extends Module
     {
         $this->name = 'captureleadsxavier';
         $this->tab = 'administration';
-        $this->version = '2.1.0';
-        $this->author = 'Xavier Martínez';
+        $this->version = '3.0.0';
+        $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
 
         /**
@@ -72,14 +72,23 @@ class Captureleadsxavier extends Module
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader') &&
             $this->registerHook('displayLeftColumn') &&
-            $this->registerHook('displayRightColumn');
+            $this->registerHook('displayRightColumn') &&
+            $this->createTables();
     }
 
     public function uninstall()
     {
         Configuration::deleteByName('CAPTURELEADSXAVIER_LIVE_MODE');
-
+        $this->dropTables();
         return parent::uninstall();
+    }
+    public function dropTables()
+    {
+        include(dirname(__FILE__).'/sql/uninstall.php');
+    }
+    public function createTables()
+    {
+        include(dirname(__FILE__).'/sql/install.php');
     }
 
     /**
