@@ -34,7 +34,7 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
         ));
 
 
-        return $this->setTemplate('test.tpl');
+        return $this->setTemplate('newsletterForm.tpl');
     }
 
 
@@ -43,8 +43,9 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
         if (Tools::isSubmit('submitCaptureleadsNewsletter')) {
             if (Tools::getValue('action') == '0') {
                 // toDo: Clean input and check for values already in the table
+                // Bootstrap email field block some valid email options.
                 $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES
-                ('".pSQL(Tools::getValue('email'))."');";
+                ('".filter_var(pSQL(Tools::getValue('email')), FILTER_SANITIZE_EMAIL)."');";
                 Db::getInstance()->execute($sql);
             }
 

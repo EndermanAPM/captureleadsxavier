@@ -46,10 +46,11 @@ Objectives
 ####Fixer Upper:
  
  - [ ] P2 - Remove unnecessary (productsViewed) query elements.
- - [ ] Sanitize inputs.
- - [ ] Improve file naming.
+ - [ ] Sanitize front inputs.
+ - [X] Improve file naming.
  - [ ] Remove embedded CCS and JS from tpl files.
  - [ ] Avoid hardcoding at ModuleFrontController (getModuleLInk).
+ - [ ] Bootstrap email field blocking valid emails.
  
  
  
@@ -57,13 +58,15 @@ Objectives
 #####Part2:
 
  - [ ] Number of items shown selector (Configure). 
+ - [ ] Display price with tax.
  
 #####Part3:
  
  - [ ] Add check for data already on the database.
  - [ ] Close fancybox after data POST.
  - [ ] Add frontend feedback of the result of the form.
- - [ ] Improve mail storage structure.
+ - [ ] Improve mail storage structure (slice mail/date storage).
+
  
 ###Late additons
  
