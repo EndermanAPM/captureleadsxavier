@@ -23,6 +23,7 @@
     (your Fancybox content goes in here)
 </div>
 
+
 <!-- Code from Block Newsletter module-->
 
 <div id="newsletter_block_left" class="block">
@@ -33,7 +34,7 @@
         {if isset($msg) && $msg}
             <p class="{if $nw_error}warning_inline{else}success_inline{/if}">{$msg}</p>
         {/if}
-        <form action="{$link->getPageLink('index', true)|escape:'html'}" method="post">
+        <form action="{$postURL|escape:'html'}" method="post">
             <p>
                 <input class="inputNew" id="newsletter-input" type="text" name="email" size="18" value="{if isset($value) && $value}{$value}{else}{l s='your e-mail' mod='captureleadsxavier'}{/if}" />
                 <input type="submit" value="ok" class="button_mini" name="submitCaptureleadsNewsletter" />
@@ -43,6 +44,7 @@
     </div>
 </div>
 
+{*This isn't quite working*}
 <script type="text/javascript">
     var placeholder = "{l s='your e-mail' mod='captureleadsxavier' js=1}";
     {literal}

@@ -39,6 +39,7 @@ class Captureleadsxavier extends Module
         $this->version = '3.0.1';
         $this->author = 'Xavier Martinez';
         $this->need_instance = 0;
+        $this->controllers = array('newslettercaptureleads');
 
         /**
          * Set $this->bootstrap to true if your module is compliant with bootstrap (PrestaShop 1.6)
@@ -334,114 +335,20 @@ class Captureleadsxavier extends Module
             $this->smarty->assign(array(
                 'message_txt' => $this->displayName,
                 'productsViewedObj' => $productsViewedObj,
-                'mediumSize' => Image::getSize('medium')));
+                'mediumSize' => Image::getSize('medium'),
+                'postURL' => $this->context->link->getModuleLInk($this->name, newslettercaptureleads)
+            ));
 
             return $this->display(__FILE__, 'column.tpl');
         }
         return;
     }
 
-    protected function _prepareHook($params)
-    {
 
-        if (Tools::isSubmit('submitCaptureleadsNewsletter')) {
-            $this->newsletterRegistration();
-            if ($this->error) {
-                $this->smarty->assign(
-                    array(
-                        'color' => 'red',
-                        'msg' => $this->error,
-                        'nw_value' => isset($_POST['email']) ? pSQL($_POST['email']) : false,
-                        'nw_error' => true,
-                        'action' => $_POST['action']
-                    )
-                );
-            } else if ($this->valid) {
-                $this->smarty->assign(
-                    array(
-                        'color' => 'green',
-                        'msg' => $this->valid,
-                        'nw_error' => false
-                    )
-                );
-            }
-        }
-        $this->smarty->assign('this_path', $this->_path);
-    }
-
-    protected function newsletterRegistration()
-    {
-        if (empty($_POST['email']) || !Validate::isEmail($_POST['email']))
-            return $this->error = $this->l('Invalid email address.');
-
-
-        /* Unsubscription */
-        else if ($_POST['action'] == '1')
-        {
-            $register_status = $this->isNewsletterRegistered($_POST['email']);
-
-            if ($register_status < 1)
-                return $this->error = $this->l('This email address is not registered.');
-
-            if (!$this->unregister($_POST['email'], $register_status))
-                return $this->error = $this->l('An error occurred while attempting to unsubscribe.');
-
-            return $this->valid = $this->l('Unsubscription successful.');
-        }
-        /* Subscription */
-        else if ($_POST['action'] == '0')
-        {
-            $email = pSQL($_POST['email']);
-            $this->registerGuest($email);
-            
-            $register_status = $this->isNewsletterRegistered($_POST['email']);
-            if ($register_status > 0)
-                return $this->error = $this->l('This email address is already registered.');
-
-            $email = pSQL($_POST['email']);
-            if (!$this->isRegistered($register_status))
-            {
-                if (Configuration::get('NW_VERIFICATION_EMAIL'))
-                {
-                    // create an unactive entry in the newsletter database
-                    if ($register_status == self::GUEST_NOT_REGISTERED)
-                        $this->registerGuest($email, false);
-
-                    if (!$token = $this->getToken($email, $register_status))
-                        return $this->error = $this->l('An error occurred during the subscription process.');
-
-                    $this->sendVerificationEmail($email, $token);
-
-                    return $this->valid = $this->l('A verification email has been sent. Please check your inbox.');
-                }
-                else
-                {
-                    if ($this->register($email, $register_status))
-                        $this->valid = $this->l('You have successfully subscribed to this newsletter.');
-                    else
-                        return $this->error = $this->l('An error occurred during the subscription process.');
-
-                    if ($code = Configuration::get('NW_VOUCHER_CODE'))
-                        $this->sendVoucher($email, $code);
-
-                    if (Configuration::get('NW_CONFIRMATION_EMAIL'))
-                        $this->sendConfirmationEmail($email);
-                }
-            }
-        }
-    }
-    protected function registerGuest($email)
-    {
-        $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES('test');";
-
-        return Db::getInstance()->execute($sql);
-    }
     public function hookDisplayLeftColumn($params)
     {
         if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')!="right")
         {
-            //if (!isset($this->prepared) || !$this->prepared)
-            $this->_prepareHook($params);
             return $this->viewedItems($params);
         }
     }
@@ -450,8 +357,7 @@ class Captureleadsxavier extends Module
     {
         if (Configuration::get('CAPTURELEADSXAVIER_COL_SEL')=="right")
         {
-            if (!isset($this->prepared) || !$this->prepared)
-                $this->_prepareHook($params);
+
             return $this->viewedItems();
         }
     }
