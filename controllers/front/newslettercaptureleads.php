@@ -28,7 +28,8 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
     {
         parent::initContent();
         $this->context->smarty->assign(array(
-            // There must be a way of populating getModuleLink from the controller without hardcoding it (aside config values)
+            // There must be a way of populating getModuleLink from the controller without hardcoding it
+            // (aside config values)
             'postURL' => $this->context->link->getModuleLInk("captureleadsxavier", "newslettercaptureleads")
         ));
 
@@ -41,10 +42,11 @@ class captureleadsxaviernewslettercaptureleadsModuleFrontController extends Modu
     {
         if (Tools::isSubmit('submitCaptureleadsNewsletter'))
         {
-            if ($_POST['action'] == '0')
+            if (Tools::getValue('action') == '0')
             {
                 // toDo: Clean input and check for values already in the table
-                $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES('".pSQL($_POST['email'])."');";
+                $sql = "INSERT INTO "._DB_PREFIX_."captureleadsxavier_newsletter (email) VALUES
+                ('".pSQL(Tools::getValue('email'))."');";
                 Db::getInstance()->execute($sql);
             }
 

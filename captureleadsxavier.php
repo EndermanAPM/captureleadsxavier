@@ -341,7 +341,6 @@ class Captureleadsxavier extends Module
 
             return $this->display(__FILE__, 'column.tpl');
         }
-        return;
     }
 
 

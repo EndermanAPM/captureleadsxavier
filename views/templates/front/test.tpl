@@ -22,7 +22,7 @@ label {
 <div id="newsletter_block_left" class="block">
     <h4 class="title_block">{l s='Newsletter' mod='captureleadsxavier'}</h4>
     <div class="block_content">
-        <form action="{$postURL|escape:'html'}" method="post" id="newForm">
+        <form action="{$postURL|escape:'htmlall':'UTF-8'}" method="post" id="newForm">
             <p>
 
                 <div class="form-group">
